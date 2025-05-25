@@ -3,28 +3,30 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 function App() {
   const [movies, setMovies] = useState([]);
   const [form, setForm] = useState({ title: '', genre: '', year: '', watched: false });
 
   const fetchMovies = async () => {
-    const res = await axios.get('http://localhost:5000/api/movies');
+    const res = await axios.get(`${baseUrl}/api/movies`);
     setMovies(res.data);
   };
 
   const addMovie = async () => {
-    await axios.post('http://localhost:5000/api/movies', form);
+    await axios.post(`${baseUrl}/api/movies`, form);
     fetchMovies();
     setForm({ title: '', genre: '', year: '', watched: false });
   };
 
   const deleteMovie = async (id) => {
-    await axios.delete(`http://localhost:5000/api/movies/${id}`);
+    await axios.delete(`${baseUrl}/api/movies/${id}`);
     fetchMovies();
   };
 
   const toggleWatch = async (movie) => {
-    await axios.put(`http://localhost:5000/api/movies/${movie._id}`, {
+    await axios.put(`${baseUrl}/api/movies/${movie._id}`, {
       ...movie,
       watched: !movie.watched,
     });
